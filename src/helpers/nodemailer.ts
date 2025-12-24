@@ -14,10 +14,17 @@ console.log(`   Frontend URL: ${process.env.FRONTURL}\n`);
 const transporter = nodemailer.createTransport({
     host: process.env.SMTP_HOST,
     port: Number(process.env.SMTP_PORT),
+    secure: false, // true para 465, false para otros puertos
     auth: {
-        user: process.env.SMTP_USER, // API KEY de Brevo
-        pass: process.env.SMTP_PASS, // API KEY también
+        user: process.env.SMTP_USER,
+        pass: process.env.SMTP_PASS,
     },
+    tls: {
+        rejectUnauthorized: false, // Para evitar problemas con certificados en producción
+    },
+    connectionTimeout: 10000, // 10 segundos
+    greetingTimeout: 10000,
+    socketTimeout: 10000,
 });
 
 export const sendEmail = async (to: string, data: any) => {
