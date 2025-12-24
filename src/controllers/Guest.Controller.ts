@@ -34,13 +34,25 @@ export class GuestController {
             };
 
             const newGuest = await Guest.create(newGuestData);
+            console.log(`✅ Guest creado en BD: ${newGuest._id} - ${name}`);
+
+            // Envío de correos con logging detallado
+            console.log(`\n📬 Iniciando envío de correos para guest: ${newGuest._id}`);
 
             Promise.all([
                 sendEmail("ritaronces@gmail.com", newGuestData),
                 sendEmail("jorgearquam@gmail.com", newGuestData),
-            ]).catch((emailError) => {
-                console.error("Error al enviar correos para guest:", newGuest._id, emailError);
-            });
+            ])
+                .then(() => {
+                    console.log(`✅ TODOS los correos enviados correctamente para guest: ${newGuest._id}\n`);
+                })
+                .catch((emailError) => {
+                    console.error(`\n❌ ERROR CRÍTICO al enviar correos para guest: ${newGuest._id}`);
+                    console.error(`   Nombre: ${name}`);
+                    console.error(`   Detalles del error:`, emailError);
+                    console.error(`   Stack trace:`, emailError.stack);
+                    console.error(`\n`);
+                });
 
             return res.status(201).json({
                 code: 201,
@@ -48,7 +60,7 @@ export class GuestController {
                 data: newGuest,
             });
         } catch (error) {
-            console.error("Error en create:", error);
+            console.error("❌ Error en create:", error);
             return res.status(500).json({
                 code: 500,
                 message: "Error al crear invitación",
@@ -56,7 +68,6 @@ export class GuestController {
             });
         }
     };
-
     static getAll = async (req: Request, res: Response) => {
         try {
             const { confirmed } = req.query;

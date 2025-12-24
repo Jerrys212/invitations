@@ -12,11 +12,11 @@ const transporter = nodemailer.createTransport({
     },
 });
 
-/**
- * Enviar correo de confirmación
- */
 export const sendEmail = async (to: string, data: any) => {
     const { name, phone, guests, confirmed } = data;
+
+    console.log(`📧 Intentando enviar correo a: ${to}`);
+    console.log(`   Para invitado: ${name}`);
 
     const guestListHtml = guests.length
         ? guests
@@ -78,7 +78,7 @@ export const sendEmail = async (to: string, data: any) => {
               </p>
 
               <p style="font-size: 16px; margin: 0 0 10px;">
-                Teléfono de contacto: <strong>${phone}</strong>
+                Teléfono de contacto: <strong>${phone || "No proporcionado"}</strong>
               </p>
 
               <p style="font-size: 16px; margin: 0 0 20px;">
@@ -132,10 +132,14 @@ export const sendEmail = async (to: string, data: any) => {
 
     try {
         const info = await transporter.sendMail(mailOptions);
-        console.log("Correo enviado:", info.messageId);
+        console.log(`✅ Correo enviado exitosamente a ${to}`);
+        console.log(`   Message ID: ${info.messageId}`);
+        console.log(`   Response: ${info.response}`);
         return info;
     } catch (error) {
-        console.error("Error enviando correo:", error);
-        throw new Error("No se pudo enviar el correo");
+        console.error(`❌ ERROR al enviar correo a ${to}:`);
+        console.error(`   Invitado: ${name}`);
+        console.error(`   Error completo:`, error);
+        throw error;
     }
 };
