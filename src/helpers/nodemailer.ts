@@ -3,6 +3,14 @@ import dotenv from "dotenv";
 
 dotenv.config();
 
+// Al inicio de tu archivo o en el main
+console.log("📧 Configuración SMTP:");
+console.log(`   Host: ${process.env.SMTP_HOST}`);
+console.log(`   Port: ${process.env.SMTP_PORT}`);
+console.log(`   User: ${process.env.SMTP_USER ? "✓ Configurado" : "❌ NO configurado"}`);
+console.log(`   Pass: ${process.env.SMTP_PASS ? "✓ Configurado" : "❌ NO configurado"}`);
+console.log(`   Frontend URL: ${process.env.FRONTURL}\n`);
+
 const transporter = nodemailer.createTransport({
     host: process.env.SMTP_HOST,
     port: Number(process.env.SMTP_PORT),
