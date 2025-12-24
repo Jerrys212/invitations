@@ -7,6 +7,13 @@ export class GuestController {
         try {
             const { name, guests, phone, confirmed } = req.body;
 
+            if (!name || !guests) {
+                return res.status(400).json({
+                    code: 400,
+                    message: "Nombre y número de invitados son requeridos",
+                });
+            }
+
             const phoneValue = phone === 0 ? null : phone;
 
             if (phoneValue) {
@@ -25,11 +32,15 @@ export class GuestController {
                 phone: phoneValue,
                 confirmed: confirmed ?? false,
             };
-            // 2. Intentar enviar el correo
-            // await sendEmail("vanncr98@gmail.com", newGuestData);
 
-            // 3. Si el correo se envió, guardar en BD
             const newGuest = await Guest.create(newGuestData);
+
+            Promise.all([
+                sendEmail("ritaronces@gmail.com", newGuestData),
+                sendEmail("jorgearquam@gmail.com", newGuestData),
+            ]).catch((emailError) => {
+                console.error("Error al enviar correos para guest:", newGuest._id, emailError);
+            });
 
             return res.status(201).json({
                 code: 201,
@@ -37,11 +48,11 @@ export class GuestController {
                 data: newGuest,
             });
         } catch (error) {
-            console.error(error);
+            console.error("Error en create:", error);
             return res.status(500).json({
                 code: 500,
                 message: "Error al crear invitación",
-                error,
+                error: error instanceof Error ? error.message : error,
             });
         }
     };
