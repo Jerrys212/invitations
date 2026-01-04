@@ -8,7 +8,7 @@ export const corsConfig: CorsOptions = {
         console.log("FRONTURL env:", process.env.FRONTURL);
         console.log("==================");
 
-        const whitelist = [process.env.FRONTURL];
+        const whitelist = [process.env.FRONTURL, "http://localhost:5173"];
 
         // Permitir requests sin origin
         if (!origin) {
