@@ -12,17 +12,20 @@
     "author": "",
     "license": "ISC",
     "dependencies": {
+        "cloudinary": "^2.9.0",
         "colors": "^1.4.0",
         "cors": "^2.8.5",
         "dotenv": "^17.2.0",
         "express": "^5.1.0",
         "express-validator": "^7.2.1",
+        "formidable": "^3.5.4",
         "fs-extra": "^11.3.2",
         "mongoose": "^8.16.4",
         "nodemailer": "^7.0.10",
         "path": "^0.12.7",
         "sharp": "^0.34.5",
-        "zod": "^4.1.12"
+        "zod": "^4.1.12",
+        "uuid": "^11.1.0"
     },
     "devDependencies": {
         "@types/cors": "^2.8.19",

@@ -5,6 +5,7 @@ import type { Request, Response } from "express";
 import { connectDB } from "./config/db";
 import { corsConfig } from "./config/cors";
 import guestRouter from "./routes/guestRouter";
+import paymentRouter from "./routes/paymentRouter";
 
 dotenv.config();
 
@@ -18,5 +19,6 @@ app.use("/health", (req: Request, res: Response) => {
     return res.json({ code: 200, message: "API funcionando correctamente", data: [] });
 });
 app.use("/api/invites", guestRouter);
+app.use("/api/payment", paymentRouter);
 
 export default app;
