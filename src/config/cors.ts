@@ -6,9 +6,10 @@ export const corsConfig: CorsOptions = {
         console.log("=== DEBUG CORS ===");
         console.log("Origin recibido:", origin);
         console.log("FRONTURL env:", process.env.FRONTURL);
+        console.log("FRONTURL env:", process.env.PAYMENTSURL);
         console.log("==================");
 
-        const whitelist = [process.env.FRONTURL, "http://localhost:5173"];
+        const whitelist = [process.env.FRONTURL, process.env.PAYMENTSURL, "http://localhost:5173"];
 
         // Permitir requests sin origin
         if (!origin) {
